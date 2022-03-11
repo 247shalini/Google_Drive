@@ -1,0 +1,17 @@
+ {{!-- display images --}}
+    <section>
+        <div class="row">
+            {{#each data}}
+            <div class="col-3 m-3">
+                <div class="card shadow" style="width: 18rem;">
+                    <img src='/uploads/{{this.path}}' style="width:285px;height: 200px;" />
+                    <div class="card-body text-center">
+                        <h5 class="card-title font-poppins">Image</h5>
+                       
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </section>
+{{!-- /display images --}}

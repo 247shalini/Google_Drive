@@ -1,0 +1,117 @@
+<style>
+  /* message style*/
+  #message {
+    color: green;
+    display: none;
+  }
+</style>
+
+{{!-- navbar start --}}
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark nav justify-content-end">
+  <ul class="nav mx-4">
+    <li class="nav-item">
+      <a class="nav-link text-light" href="#"><i class="fa fa-fw fa-home"></i>Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link text-light" href="http://localhost:8000/login"><i
+          class="fa-solid fa-arrow-right-from-bracket"></i>Logout</a>
+    </li>
+  </ul>
+</nav>
+{{!-- navbar end --}}
+
+{{!-- homepage start --}}
+<div class="row" style="padding-left:20px; margin:0px;">
+  <div class="col-12">
+    <h1 class="ml-4 mt-3">Total Upload File : {{total}}</h1>
+    <button type="button" class="btn btn-warning mb-3 mt-3" data-bs-toggle="modal"
+      data-bs-target="#exampleModalCenter">Upload Image</button>
+  </div>
+
+  {{#each files}}
+  <div class="col-4">
+    <form action="/view" method="POST" enctype="multipart/form-data">
+      <div class="card mt-3">
+        <div class="card-body">
+          <h5 class="card-title">{{this.name}}</h5>
+          <p class="card-text"></p>
+          <button class="btn btn-primary">View File</button>
+          <a onclick="setFileId('{{ this._id }}')" class="btn btn-primary mx-1" data-bs-toggle="modal"
+            data-bs-target="#exampleModalCenters">Share this Image</a>
+        </div>
+      </div>
+    </form>
+  </div>
+  {{/each}}
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle"> </h5>
+        <button type="button" style="float: right;" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form role="form" method="post" action="/upload" enctype="multipart/form-data">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label for="formFile" class="form-label">Upload a Image : </label>
+            <input class="form-control" type="file" name="file" id="formFile">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary">Upload Image</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenters" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Share this File</h5>
+        <button type="button" style="float: right;" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form role="form" method="post" action="/permitted">
+        <div class="modal-body">
+          <div>
+            <input type="hidden" name="fileId" id="fileId" />
+            <label for="share-email" class="form-label">Enter a Email</label>
+            <input class="form-control" type="text" id="share-email" name="emails" />
+          </div>
+        </div>
+        {{!-- email sent successfully code --}}
+        <div class="mx-3" id="message">
+          <p>Email sent successfully!!</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" onclick="msgdisplay()" class=" btn btn-primary">Share Image</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  function setFileId(fileId) {
+    document.getElementById("fileId").value = fileId;
+  }
+
+  function msgdisplay() {
+    document.getElementById("message").style.display = "block";
+  }
+</script>
+{{!-- homepage end --}}
