@@ -46,6 +46,6 @@ router.post('/logout' , UserController.logOut)
 
 // sendemail and permitted users API
 router.post('/permitted', privateShareValidation, sendEmailTemplate ,UserController.permittedUsers)
-router.post('/public', publicShareValidation, sendEmailTemplate ,UserController.publicShare)
+router.post('/public', publicShareValidation ,UserController.publicShare)
 
 module.exports = router

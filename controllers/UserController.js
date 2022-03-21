@@ -12,10 +12,10 @@ const homePage = async (req, res, next) => {
       res.redirect('/login')
     }
 
-    const planSubscription = await UserModel.findById({_id: userId });
+    const planSubscription = await UserModel.findById({ _id: userId });
 
-    if(planSubscription.plan == 'none') {
-       return res.redirect('/plan')
+    if (planSubscription.plan == 'none') {
+      return res.redirect('/plan')
     }
 
     const userEmail = req.session.userEmail;
@@ -189,7 +189,7 @@ const permittedUsers = async (req, res, next) => {
     if (!file) {
       return res.redirect("/");
     }
-    
+
     // private image share count
     const shareLimit = await UserModel.findById({ _id: userId })
     // console.log("permitted",shareLimit)
@@ -199,7 +199,7 @@ const permittedUsers = async (req, res, next) => {
     const userEmail = [];
     userEmail.push({ userEmail: emails, isOwner: false });
     file.permittedUsers.push(...userEmail);
-    
+
     await file.save(userEmail);
     return res.redirect("/");
 
@@ -213,7 +213,7 @@ const permittedUsers = async (req, res, next) => {
   }
 };
 
-const publicShare = async(req,res,next) => {
+const publicShare = async (req, res, next) => {
   try {
     const { fileId } = req.body;
     const userId = req.session.userId;
@@ -222,9 +222,16 @@ const publicShare = async(req,res,next) => {
       return res.redirect("/");
     }
 
+    const { emails } = req.body
+    console.log(emails)
+    const emailClient = new Email();
+    emailClient.setTemplate(AVAILABLE_TEMPLATES.PUBLICREQUEST);
+    emailClient.setBody({path:file.path});
+    emailClient.send(emails);
+
     // public image share count
     const shareLimit = await UserModel.findById({ _id: userId })
-    console.log("permitted",shareLimit)
+    console.log("permitted", shareLimit)
     await UserModel.findOneAndUpdate({ _id: userId }, { $set: { publicShare: shareLimit.publicShare + 1 } }, { new: true })
     return res.redirect("/");
 

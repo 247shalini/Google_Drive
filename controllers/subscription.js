@@ -13,45 +13,32 @@ const subscription = async (req, res) => {
     }
     else {
         const buttonValue = [
-            { id: "freePlan", color: "bg-dark", name:"Free Plan", price:"$5.0" },
-            { id: "basicPlan", color: "bg-secondary",  name:"Basic Plan", price:"$10.0" },
-            { id: "standard", color: "bg-dark" , name:"Standard", price:"$15.0"},
-            { id: "premium", color: "bg-secondary", name:"Premium", price:"$20.0" },
+            { id: "freePlan", color: "bg-dark", name:"Free Plan", price:"5.0" },
+            { id: "basicPlan", color: "bg-secondary",  name:"Basic Plan", price:"10.0" },
+            { id: "standard", color: "bg-dark" , name:"Standard", price:"15.0"},
+            { id: "premium", color: "bg-secondary", name:"Premium", price:"20.0" },
         ]
 
-        // const plans = [
-        //     {
-        //         name:"Free Plan",
-        //         price:"$5.0"
-        //     },
-        //     {
-        //         name:"Basic Plan",
-        //         price:"$10.0"
-        //     },
-        //     {
-        //         name:"Standard",
-        //         price:"$15.0"
-        //     },
-        //     {
-        //         name:"Premium",
-        //         price:"$20.0"
-        //     }
-        // ]
-        
         return res.render('subscription/subscription', {
             data: buttonValue,
         })
-
     }
 }
+
 const subscriptionAction = async (req, res) => {
             try {
 
-                const { plan } = req.body;
+                const { plan ,price} = req.body;
                 const userId = req.session.userId;
                 console.log("subscription....", userId)
                 await UserModel.findOneAndUpdate({ _id: userId }, { $set: { plan: plan } }, { new: true })
-                return res.redirect("/paymentpage");
+                return res.render("subscription/paymentpage", 
+                    {   
+                        plan: plan,
+                        price: price, 
+                        key: stripePublicKey
+                    }
+                );
 
             } catch (error) {
                 return res.status(500).json({
@@ -65,9 +52,10 @@ const subscriptionAction = async (req, res) => {
 
 const paymentPage = async (req, res) => {
             try {
-                return res.render('subscription/paymentpage', { 
-                    key: stripePublicKey
-                }) 
+                // return res.render('subscription/paymentpage', { 
+                //     key: stripePublicKey
+                // }) 
+                return res.send("helloooo") 
             } catch (e) {
                 return res.status(500).json({
                     success: false,
@@ -80,8 +68,8 @@ const paymentPage = async (req, res) => {
 
 const paymentAction = async (req, res) => {
     try {
-            console.log("helloo")
-            stripe.customers.create({ 
+         const {price} =req.body
+         stripe.customers.create({ 
                 email: req.body.stripeEmail, 
                 source: req.body.stripeToken, 
                 name: 'Stripe Payment', 
@@ -95,16 +83,14 @@ const paymentAction = async (req, res) => {
             }) 
             .then((customer) => { 
                 return stripe.charges.create({ 
-                    amount: 7000,    // Charing Rs 25 
+                    amount: this.price,    // Charing Rs per plan 
                     description: 'Subscription plan', 
                     currency: 'USD', 
                     customer: customer.id 
                 }); 
             }) 
-            .then((charges) => { 
-                console.log(charges)
-                console.log("charge")
-                return res.render("subscription/success")// If no error occurs 
+            .then((charges) => {
+                return res.send("success") // If no error occurs 
             }) 
             .catch((err) => { 
                  return res.send(err)    // If some error occurs 

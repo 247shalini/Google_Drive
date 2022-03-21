@@ -6,6 +6,7 @@ const { Console } = require("console");
 
 const AVAILABLE_TEMPLATES = {
   REQUEST: "emailtemplates",
+  PUBLICREQUEST: "publicemail"
 };
 
 class Email {
@@ -26,6 +27,10 @@ class Email {
     this.template = template;
     switch (template) {
       case AVAILABLE_TEMPLATES.REQUEST:
+        this.subject = "Welcome to our website";
+        break;
+      
+        case AVAILABLE_TEMPLATES.PUBLICREQUEST:
         this.subject = "Welcome to our website";
         break;
 

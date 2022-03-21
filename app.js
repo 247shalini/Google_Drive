@@ -23,8 +23,6 @@ app.use(session({
 // Stripe secret key code
 const stripeSecretKey = process.env.STRIPE_SECRET;
 const stripePublicKey = process.env.STRIPE_PUBLIC_KEY;
-console.log(stripeSecretKey)
-console.log(stripePublicKey)
 
 // handlebars code
 app.engine(".hbs", engine({
@@ -48,10 +46,6 @@ app.use(express.static(image_path));
 
 app.use(routes);
 app.use(express.json());
-
-// app.get("/subs", async(req,res) => {
-//   return res.render("subscription/subscription")
-// })
 
 // create server
 const port = process.env.PORT
