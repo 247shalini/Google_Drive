@@ -1,0 +1,426 @@
+<style>
+    .pricing {
+        margin: 40px 0px;
+    }
+
+    .pricing .table {
+        border-top: 1px solid #ddd;
+        background: #fff;
+    }
+
+    .pricing .table th,
+    .pricing .table {
+        text-align: center;
+    }
+
+    .pricing .table th,
+    .pricing .table td {
+        padding: 20px 10px;
+        border: 1px solid #ddd;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .pricing .table th {
+        width: 25%;
+        font-size: 30px;
+        font-weight: 400;
+        border-bottom: 0;
+        background: #2F313A;
+        color: #EBEDF3;
+    }
+
+    .pricing .table tr:nth-child(odd) {
+        background: #cacaca;
+    }
+
+    .pricing .table td:first-child {
+        padding-left: 20px;
+        text-align: left;
+        padding-top: 35px;
+        background: #6c757d;
+    }
+
+    .pricing tr td .ptable-title {
+        font-size: 22px;
+        font-weight: 400;
+        color: #fff;
+    }
+
+    .pricing tr td .ptable-title i {
+        width: 23px;
+        line-height: 25px;
+        text-align: right;
+        margin-right: 5px;
+    }
+
+    .pricing .ptable-price {
+        display: block;
+    }
+
+    .pricing tr td {
+        font-size: 16px;
+        line-height: 32px;
+    }
+
+    .pricing tr td:first-child i {
+        display: inline;
+        margin-bottom: 0px;
+        font-size: 22px;
+    }
+
+    .select {
+        font-size: 25px;
+    }
+</style>
+
+<h2 class="text-center text-light bg-dark p-3">Subscription Plan</h2>
+<!-- Pricing # -->
+<div class="pricing">
+    <div class="container">
+        <div class="pricing-table table-responsive">
+            <table class="table">
+                <!-- Heading -->
+                <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        {{#each data}}
+                        <th>
+                            {{this.name}}
+                            <span class="ptable-price">{{this.price}}</span>
+                        </th>
+                        {{!-- <th class="highlight">
+                            Basic Plan
+                            <span class="ptable-price">$10.0</span>
+                        </th>
+                        <th>
+                            Standard
+                            <span class="ptable-price">$15.0</span>
+                        </th>
+                        <th>
+                            Premium
+                            <span class="ptable-price">$20.0</span>
+                        </th> --}}
+                        {{/each}}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="ptable-title"> Image Upload</span></td>
+                        <td>
+                            5
+                        </td>
+                        <td>
+                            10
+                        </td>
+                        <td>
+                            20
+                        </td>
+                        <td>
+                            No limit
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><span class="ptable-title"> Image Sharing Public</span></td>
+                        <td>
+                            5
+                        </td>
+                        <td>
+                            10
+                        </td>
+                        <td>
+                            20
+                        </td>
+                        <td>
+                            No limit
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td><span class="ptable-title"> Image Sharing Private</span></td>
+                        <td>
+                            0
+                        </td>
+                        <td>
+                            5
+                        </td>
+                        <td>
+                            No limit
+                        </td>
+                        <td>
+                            No limit
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td><span class="ptable-title"> Invitation to User</span></td>
+                        <td>
+                            0
+                        </td>
+                        <td>
+                            5
+                        </td>
+                        <td>
+                            10
+                        </td>
+                        <td>
+                            No limit
+                        </td>
+                    </tr>
+                    <!-- Buttons -->
+                    <tr>
+                        <td>&nbsp;</td>
+                        {{#each data}}
+                        <form action="/plan" method="post">
+                            <td class="{{this.color}}">
+                                <button class="btn text-light select" type="submit" name="plan" value="{{this.id}}"
+                                    data-bs-toggle="modal" data-bs-target="#exampleModalCenters">Select</button>
+                            </td>
+                        </form>
+                        {{/each}}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{{!--
+<style>
+    .header {
+        background: #00C9FF;                                           
+    }
+
+    .bi {
+        color: #00C9FF;
+    }
+
+    .price {
+        color: white;
+        font-size: 100px;
+        font-weight: 800;
+        padding-top: -80% !important;
+    }
+
+    .flip-card {
+        background-color: transparent;
+        width: auto;
+        height: auto;
+        perspective: 1000px;
+    }
+
+    .flip-card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+    }
+
+    .flip-card:hover .flip-card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        /* Safari */
+        backface-visibility: hidden;
+    }
+
+    .flip-card-front {
+        background-color: #0d6efd;
+        color: white;
+        height: auto;
+        padding: 50px 0px;
+    }
+
+    /* Style the back side */
+    .flip-card-back {
+        background-color: white;
+        color: black;
+        transform: rotateY(180deg);
+        padding: 50px 0px;
+    }
+</style>
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark nav justify-content-center">
+    <h2 class="text-light mt-2">Subscription Plan</h2>
+</nav>
+
+<div class="p-5">
+    <div class="row">
+        <div class="col-lg-3 col-md-12 mb-4">
+            <div class="h-100 flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                        <span class="price">$0</span><br>/month
+                        <br>
+                        <h2 class="card-title">Free plan</h2>
+                        <small>All</small>
+                    </div>
+                    <div class="flip-card-back">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path
+                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                </svg> Image Upload : 5</li>
+                            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path
+                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                </svg> Image Sharing Public : 5</li>
+                            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path
+                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                </svg> Image Sharing Private : 0</li>
+                            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path
+                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                </svg> Invitation to User : 0</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-12 mb-4">
+            <div class="h-100 flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+
+                        <span class="price">$5</span><br>/month
+                        <br>
+                        <h2 class="card-title">Basic plan</h2>
+                        <small>Individual</small>
+                    </div>
+                    <div class="flip-card-back">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path
+                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                </svg> Image Upload : 10</li>
+                            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path
+                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                </svg> Image Sharing Public : 10</li>
+                            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path
+                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                </svg> Image Sharing Private : 5</li>
+                            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path
+                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                </svg> Invitation to User : 5</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-12 mb-4">
+            <div class="h-100 flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+
+                        <span class="price">$10</span><br>/month
+                        <br>
+                        <h2 class="card-title">Standard</h2>
+                        <small>Small Business</small>
+                    </div>
+                    <div class="flip-card-back">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path
+                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                </svg> Image Upload : 20</li>
+                            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path
+                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                </svg> Image Sharing Public : 20</li>
+                            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path
+                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                </svg> Image Sharing Private : No limit</li>
+                            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path
+                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                </svg> Invitation to User : 10</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-12 mb-4">
+            <div class="h-100 flip-card">
+                <div class="flip-card-inner">
+                    <div class="flip-card-front">
+
+                        <span class="price">$15</span><br>/month
+                        <br>
+                        <h2 class="card-title">Premium</h2>
+                        <small>Large Company</small>
+                    </div>
+                    <div class="flip-card-back">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path
+                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                </svg> Image Upload : No limit</li>
+                            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path
+                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                </svg> Image Sharing Public : No limit</li>
+                            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path
+                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                </svg> Image Sharing Private : No limit</li>
+                            <li class="list-group-item"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                    fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path
+                                        d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.267.267 0 0 1 .02-.022z" />
+                                </svg> Invitation to User : No limit</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<table class="my-5">
+    <tr>
+        {{#each data}}
+        <form action="/plan" method="post">
+            <div class="d-flex">
+                <ul class="list-group list-group-flush">
+                    <li>
+                        {{!-- <div class="{{this.color}}"> --}}
+                            {{!-- <button class="btn" type="submit" name="plan" value="{{this.id}}"
+                                data-bs-toggle="modal" data-bs-target="#exampleModalCenters">Select</button>
+
+                    </li>
+
+                </ul>
+            </div>
+        </form>
+        {{/each}}
+    </tr>
+    </div> --}} --}}

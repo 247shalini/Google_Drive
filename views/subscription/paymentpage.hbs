@@ -1,0 +1,16 @@
+<div class="text-center my-5">
+    <h3>Welcome to Payment Gateway</h3>
+    <div class="modal-body">
+        <label for="share-email" class="form-label mt-4">Your Subscription plan : {{value}}</label>
+        <br>
+        <label for="share-email" class="form-label">Price : {{this.price}}</label>
+    </div>
+
+    <form action="/" method="get">
+        <script src="//checkout.stripe.com/v1/checkout.session" class="stripe-button" data-key={{this.key}}
+            data-amount="7000" data-currency="USD" data-name="Stripe Payment"
+            data-description="Subscription plan" data-locale="auto">
+        </script>
+    </form>
+
+</div>

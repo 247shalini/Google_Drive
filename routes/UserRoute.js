@@ -4,10 +4,15 @@ const { UserController } = require('../controllers');
 const multer = require("multer");
 const fs = require('fs-extra');
 const path = require('path');
+const subscriptionPlan = require('../middleware/subscription')
 const sendEmailTemplate = require('../middleware/email');
+const subscriptionValidation = require('../validations/subscriptionValidation');
+const imageValidation = require('../validations/ImageValidation');
+const publicShareValidation = require('../validations/publicShareValidation');
+const privateShareValidation = require('../validations/privateShareValidation');
 
 // home page
-router.get('/' , UserController.homePage)
+router.get('/' ,UserController.homePage)
 router.post('/', UserController.homeAction)
 
 // login page
@@ -18,17 +23,29 @@ router.post('/login', UserController.loginAction)
 router.get('/register' , UserController.registerPage)
 router.post('/register', UserController.registerAction)
 
-// file upload
-const uploadPath = path.join(__dirname, "..", "uploads");
-fs.ensureDirSync(uploadPath);
-const upload = multer({dest: uploadPath})
-router.post('/upload', upload.single("file") , UserController.uploadFile)
-// router.get('/upload/:id', UserController.uploadFileAction)
+// multer module code
+const storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, './uploads')
+    },
+    filename: function(req, file, cb) {
+        cb(null, new Date().toISOString() + file.originalname);
+    }
+});
+const upload = multer({storage: storage});
 
-// view Image
-router.post('/view' , UserController.viewImage)
+// file upload
+router.post('/upload', imageValidation ,upload.single("file") , UserController.uploadFile)
+
+//view Image code
+router.post('/viewimage', UserController.viewImage)
+router.get('/viewimage' , UserController.viewImageAction)
+
+// logout api
+router.post('/logout' , UserController.logOut)
 
 // sendemail and permitted users API
-router.post('/permitted', sendEmailTemplate ,UserController.permittedUsers)
+router.post('/permitted', privateShareValidation, sendEmailTemplate ,UserController.permittedUsers)
+router.post('/public', publicShareValidation, sendEmailTemplate ,UserController.publicShare)
 
 module.exports = router

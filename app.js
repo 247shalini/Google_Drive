@@ -2,9 +2,14 @@ require('dotenv').config()
 const routes = require("./routes");
 const express = require('express');
 const { engine } = require('express-handlebars');
+const bodyParser = require("body-parser");
 const  path  = require('path');
 const session = require('express-session');
+const Handlebars = require('handlebars');
 const { default: mongoose } = require("mongoose");
+const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
+const { env } = require('process');
+const { Console } = require('console');
 
 const app = express(); 
 app.set('trust proxy', 1)
@@ -15,22 +20,38 @@ app.use(session({
   cookie: { secure: false }
 }))
 
+// Stripe secret key code
+const stripeSecretKey = process.env.STRIPE_SECRET;
+const stripePublicKey = process.env.STRIPE_PUBLIC_KEY;
+console.log(stripeSecretKey)
+console.log(stripePublicKey)
+
 // handlebars code
 app.engine(".hbs", engine({
   extname: ".hbs",
   defaultLayout: "main",
+  handlebars: allowInsecurePrototypeAccess(Handlebars),
 })
 )
+
 app.set("view engine", ".hbs"); 
 app.use(express.urlencoded({ extended: false }))
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended:false}));
 app.set("views", path.join(__dirname, "views")) 
 
-// public folder path
+// public and upload folder path
 const static_path = path.join(__dirname, "./public");
+const image_path = path.join(__dirname, "./uploads");
 app.use(express.static(static_path));
+app.use(express.static(image_path));
 
 app.use(routes);
 app.use(express.json());
+
+// app.get("/subs", async(req,res) => {
+//   return res.render("subscription/subscription")
+// })
 
 // create server
 const port = process.env.PORT
