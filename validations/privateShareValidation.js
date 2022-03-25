@@ -1,20 +1,20 @@
 const UserModel = require("../models/UserModel")
 
 const privateShareValidation = async (req, res, next) => {
-    const userId = req.session.userId
-    const user = await UserModel.findById({ _id: userId })
+    const Id = req.session.userId
+    const user = await UserModel.findById({ _id: Id })
     console.log("img....",user)
 
-    if (user.privateShare >= 1 && user.plan == 'freePlan') {
+    if (user.privateShare >= 1 && user.plan == 'Free-Plan') {
         return res.redirect('/plan')
     }
-    if (user.privateShare >= 2 && user.plan == 'basicPlan') {
+    if (user.privateShare >= 2 && user.plan == 'Basic-Plan') {
         return res.redirect('/plan')
     }
-    if (user.privateShare >= 100 && user.plan == 'standard') {
+    if (user.privateShare >= 100 && user.plan == 'Standard') {
         return res.redirect('/plan')
     }
-    if (user.privateShare >= 100 && user.plan == 'premium') {
+    if (user.privateShare >= 100 && user.plan == 'Premium') {
         return res.redirect('/plan')
     }
     next();

@@ -14,7 +14,6 @@ const FileSchema = new Schema(
             type: String,
             required: true,
           },
-          isOwner: { type: Schema.Types.Boolean, default: false },
         },
       ),
     ],

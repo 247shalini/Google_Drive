@@ -2,14 +2,17 @@ require('dotenv').config()
 const UserModel = require("../models/UserModel");
 const file = require('../models/file');
 const File = require("../models/file.js");
+const {alert} = require("node-popup");
 const { Email, AVAILABLE_TEMPLATES } = require("../utils/Email.js");
 const { count } = require('../models/UserModel');
 
 const homePage = async (req, res, next) => {
   try {
     const userId = req.session.userId
-    if (!userId) {
-      res.redirect('/login')
+    console.log(",userid", userId)
+
+    if(!userId) {
+      return res.redirect('/login')
     }
 
     const planSubscription = await UserModel.findById({ _id: userId });
@@ -24,7 +27,8 @@ const homePage = async (req, res, next) => {
       .lean();
     return res.render('home/home', {
       total: files.length,
-      files: files
+      files: files,
+      plan: planSubscription.plan,
     })
 
   } catch (error) {
@@ -66,12 +70,13 @@ const loginPage = async (req, res, next) => {
     });
   }
 };
+
 const loginAction = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.redirect("/login");
+      return res.status(422).render('login/login')
     }
 
     const user = await UserModel.findOne({ email });
@@ -81,14 +86,13 @@ const loginAction = async (req, res, next) => {
       return res.redirect("/");
     }
     else {
-      return res.redirect("/login")
+      return res.status(422).render("login/login", {
+        error: "User Details is Incorrect !!",
+      });
     }
   } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message:
-        "We are having some error while completing your request. Please try again after some time.",
-      error: error
+    return res.status(500).render(("login/login"), {
+      message: "Please create your account !!",
     });
   }
 };
@@ -105,6 +109,7 @@ const registerPage = async (req, res, next) => {
     });
   }
 };
+
 const registerAction = async (req, res, next) => {
   try {
     const { firstname, lastname, email, password, plan, uploadImage, publicShare, privateShare } = req.body
@@ -123,8 +128,6 @@ const registerAction = async (req, res, next) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message:
-        "We are having some error while completing your request. Please try again after some time.",
       error: error
     });
   }
@@ -143,7 +146,6 @@ const uploadFile = async (req, res, next) => {
       permittedUsers: [
         {
           userEmail,
-          isOwner: true,
         },
       ],
     });
@@ -162,37 +164,40 @@ const uploadFile = async (req, res, next) => {
   }
 };
 
-const viewImage = async (req, res, next) => {
-  await File.find()
-    .select("name path")
-    .exec()
-    .then(docs => {
-      return res.redirect("/viewimage")
-    })
-}
+// const viewImage = async (req, res, next) => {
+//   await File.find()
+//     .select("name path")
+//     .exec()
+//     .then(docs => {
+//       return res.redirect("/viewimage")
+//     })
+// }
 
-const viewImageAction = async (req, res, next) => {
-  const { fileId } = req.body
-  const image = File.find({})
-  image.exec(function (err, data) {
-    return res.render("home/home", {
-      data: data,
-    })
-  })
-}
+// const viewImageAction = async (req, res, next) => {
+//   const { fileId } = req.body
+//   const image = File.find({})
+//   image.exec(function (err, data) {
+//     return res.render("home/home", {
+//       data: data,
+//     })
+//   })
+// }
 
 const permittedUsers = async (req, res, next) => {
   try {
     const { fileId, emails } = req.body;
     const userId = req.session.userId;
     const file = await File.findById(fileId);
+    console.log("userId", userId)
+    console.log("fileId", fileId)
+
     if (!file) {
       return res.redirect("/");
     }
 
     // private image share count
     const shareLimit = await UserModel.findById({ _id: userId })
-    // console.log("permitted",shareLimit)
+    console.log("shareLimit...",shareLimit)
     await UserModel.findOneAndUpdate({ _id: userId }, { $set: { privateShare: shareLimit.privateShare + 1 } }, { new: true })
 
     // permittedUsers save
@@ -215,18 +220,15 @@ const permittedUsers = async (req, res, next) => {
 
 const publicShare = async (req, res, next) => {
   try {
-    const { fileId } = req.body;
+    const { fileId, emails } = req.body;
     const userId = req.session.userId;
     const file = await File.findById(fileId);
     if (!file) {
       return res.redirect("/");
     }
-
-    const { emails } = req.body
-    console.log(emails)
     const emailClient = new Email();
     emailClient.setTemplate(AVAILABLE_TEMPLATES.PUBLICREQUEST);
-    emailClient.setBody({path:file.path});
+    emailClient.setBody({ path: file.path });
     emailClient.send(emails);
 
     // public image share count
@@ -248,6 +250,7 @@ const publicShare = async (req, res, next) => {
 const logOut = async (req, res, next) => {
   try {
     req.session.userId = undefined
+    req.session.destroy(null);
     return res.redirect("/login")
   } catch (error) {
     return res.status(500).json({
@@ -267,8 +270,8 @@ module.exports = {
   registerPage,
   registerAction,
   uploadFile,
-  viewImage,
-  viewImageAction,
+  // viewImage,
+  // viewImageAction,
   permittedUsers,
   publicShare,
   logOut

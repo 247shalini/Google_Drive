@@ -9,7 +9,7 @@ const UserModelSchema = new Schema({
   lastname: {type: String,required: true,},
   email: {type: String,required: true,},
   password: {type: String,required: false, default:""},
-  plan: {type: String, enum:['none', 'freePlan', 'basicPlan', 'standard', 'premium'], default:'none'},
+  plan: {type: String, enum:['none', 'Free-Plan', 'Basic-Plan', 'Standard', 'Premium'], default:'none'},
   uploadImage: {type: Number, required:false, default:0},
   publicShare: {type: Number, required:false, default:0},
   privateShare: {type: Number, required:false, default:0},

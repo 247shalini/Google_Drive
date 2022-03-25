@@ -1,22 +1,15 @@
 <div class="text-center my-5">
     <h3>Welcome to Payment Gateway</h3>
     <div class="modal-body">
-        <label for="share-email" class="form-label mt-4">Your Subscription plan : {{this.plan}}</label>
+        <label for="share-email" class="form-label mt-4">Subscription plan : {{this.plan}}</label>
         <br>
-        <label for="share-email" class="form-label">Price : ${{this.price}}</label>
-        <input type="hidden" value="{{this.price}}">
-    </div>
+        <label for="share-email" class="form-label">Price : ${{this.prices}}</label>
+</div>
 
     <form action="/payment" method="post">
-        <script 
-        src="//checkout.stripe.com/checkout.session" 
-        class="stripe-button" 
-        data-key={{this.key}}
-            data-amount={{this.price}} 
-            data-currency="USD" 
-            data-name="Stripe Payment"
-            data-description="Subscription plan" data-locale="auto">
-        </script>
+        <input type="hidden" name="price" value="{{this.price}}" />
+        <script src="//checkout.stripe.com/v2/checkout.js" class="stripe-button" data-key={{this.key}}
+            data-amount="{{this.price}}" data-currency="usd" data-name="{{this.plan}}"
+            data-description="Handmade Art and Craft Products" data-locale="auto">
+            </script>
     </form>
-
-</div>

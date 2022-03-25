@@ -1,20 +1,20 @@
 const UserModel = require("../models/UserModel")
 
 const subscriptionValidation = async (req, res, next) => {
-    const userId = req.session.userId
-    const user = await UserModel.findById({ _id: userId })
-    console.log(user)
+    const Id = req.session.userId
+    const user = await UserModel.findById({ _id: Id })
+    // console.log(user)
 
-    if (user.plan == 'freePlan') {
+    if (user.plan == 'Free-Plan') {
         next();
     }
-    if (user.plan == 'basicPlan') {
+    if (user.plan == 'Basic-Plan') {
         next();
     }
-    if (user.plan == 'standard') {
+    if (user.plan == 'Standard') {
         next();
     }
-    if (user.plan == 'premium') {
+    if (user.plan == 'Premium') {
         next();
     }
     return res.redirect('/plan')

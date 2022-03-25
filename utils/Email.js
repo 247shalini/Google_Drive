@@ -3,6 +3,7 @@ const path = require("path");
 const handlebar = require("handlebars");
 const nodemailer = require("nodemailer");
 const { Console } = require("console");
+const res = require("express/lib/response");
 
 const AVAILABLE_TEMPLATES = {
   REQUEST: "emailtemplates",

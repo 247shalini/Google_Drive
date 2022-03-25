@@ -1,79 +1,81 @@
 {{!-- css styling start --}}
 <style>
-*{
-  margin: 0px;
-  padding: 0px;
-  box-sizing: border-box;
-}
+  * {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+  }
 
-body{
-  height: 100vh;
-  width: 100%;
-  font-size: 17px;
-  background: url(/img/photo.jpg);
-  background-size: cover;
-  overflow: hidden;
-}
+  body {
+    height: 100vh;
+    width: 100%;
+    font-size: 17px;
+    background: url(/img/photo.jpg);
+    background-size: cover;
+    overflow: hidden;
+  }
 
-.row{
-  text-align: -webkit-center;
-}
+  .row {
+    text-align: -webkit-center;
+  }
 
-fieldset{
-  color: rgba(252, 248, 248, 0.938);
-}
+  fieldset {
+    color: rgba(252, 248, 248, 0.938);
+  }
 
-input{
-  outline: none;
-}
+  input {
+    outline: none;
+  }
 
-legend{
-  font-size: 22px;
-  color: rgba(253, 246, 246, 0.945);
-}
+  legend {
+    font-size: 22px;
+    color: rgba(253, 246, 246, 0.945);
+  }
 
-.form-group input, .signin{
-  display: block;
-  width: 85%;
-  margin: auto;
-  margin-top: 29px;
-  font-size: 15px;
-  padding: 10px;
-  outline: none;
-}
+  .form-group input,
+  .signin {
+    display: block;
+    width: 85%;
+    margin: auto;
+    margin-top: 29px;
+    font-size: 15px;
+    padding: 10px;
+    outline: none;
+  }
 
-.form-group a {
-  text-decoration: none;
-  color: rgba(44, 134, 236, 0.904);
-}
+  .form-group a {
+    text-decoration: none;
+    color: rgba(44, 134, 236, 0.904);
+  }
 
-.form-group a:hover{
-  color: rgb(7, 103, 247);
-  text-decoration: underline;
-}
+  .form-group a:hover {
+    color: rgb(7, 103, 247);
+    text-decoration: underline;
+  }
 
-.user-details{
-  padding: 15px; 
-  background: rgba(15, 15, 15, 0.747);
-}
+  .user-details {
+    padding: 15px;
+    background: rgba(15, 15, 15, 0.747);
+  }
 
-.button{
-  display: inline-block;
-  width: 130px;
-  height: 40px;
-  margin: 20px 18px;
-  font-size: 16px;
-  padding: 4px;
-}
+  .button {
+    display: inline-block;
+    width: 130px;
+    height: 40px;
+    margin: 20px 18px;
+    font-size: 16px;
+    padding: 4px;
+    background: rgba(245, 244, 244, 0.815);
+  }
 
-.button:hover{
-  background: rgba(204, 202, 202, 0.815);
-}
+  .button:hover {
+    background: rgba(196, 194, 194, 0.815);
+  }
 
-.forgot-password{
-  display: flex;
-  margin-left: 40px;
-}
+  .forgot-password {
+    display: flex;
+    margin-left: 40px;
+  }
 </style>
 {{!-- css styling end --}}
 
@@ -84,7 +86,8 @@ legend{
       <a class="nav-link text-light" href="#"><i class="fa fa-fw fa-home"></i>Home</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link text-light" href="http://localhost:8000/register"><i class="fa fa-fw fa-user-plus"></i>Registration</a>
+      <a class="nav-link text-light" href="http://localhost:8000/register"><i
+          class="fa fa-fw fa-user-plus"></i>Registration</a>
     </li>
     <li class="nav-item">
       <a class="nav-link text-light" href="http://localhost:8000/login"><i class="fa fa-fw fa-user"></i>Login</a>
@@ -102,11 +105,11 @@ legend{
       <div class="user-details center col-lg-6">
 
         <div class="form-group">
-          <input type="email" name="email" class="form-control" id="email" placeholder="Email" required/>
+          <input type="email" name="email" class="form-control" id="email" placeholder="Email" required />
         </div>
 
         <div class="form-group">
-          <input type="password" name="password" class="form-control" id="password" placeholder="Password" required/>
+          <input type="password" name="password" class="form-control" id="password" placeholder="Password" required />
         </div>
 
         <div class="form-group mt-3">
@@ -115,6 +118,8 @@ legend{
 
         <div class="m-3">
           <input type="submit" value="Login" class="button">
+          <div class="d-flex flex-row mx-4 p-2 text-info">{{this.error}}</div>
+          <div class="d-flex flex-row mx-4 p-2 text-info">{{message}}</div>
         </div>
       </div>
 

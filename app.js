@@ -8,8 +8,6 @@ const session = require('express-session');
 const Handlebars = require('handlebars');
 const { default: mongoose } = require("mongoose");
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
-const { env } = require('process');
-const { Console } = require('console');
 
 const app = express(); 
 app.set('trust proxy', 1)
@@ -45,10 +43,10 @@ app.use(express.static(static_path));
 app.use(express.static(image_path));
 
 app.use(routes);
-app.use(express.json());
+app.use(express.json()); 
 
 // create server
-const port = process.env.PORT
+const port = process.env.PORT || 8000
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`)
 })
