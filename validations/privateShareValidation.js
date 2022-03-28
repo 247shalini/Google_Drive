@@ -1,9 +1,11 @@
 const UserModel = require("../models/UserModel")
+const File = require("../models/file.js");
+const file = require('../models/file');
+const { permittedUsers } = require("../controllers/UserController");
 
 const privateShareValidation = async (req, res, next) => {
     const Id = req.session.userId
     const user = await UserModel.findById({ _id: Id })
-    console.log("img....",user)
 
     if (user.privateShare >= 1 && user.plan == 'Free-Plan') {
         return res.redirect('/plan')

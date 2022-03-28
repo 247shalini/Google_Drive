@@ -7,7 +7,8 @@ const res = require("express/lib/response");
 
 const AVAILABLE_TEMPLATES = {
   REQUEST: "emailtemplates",
-  PUBLICREQUEST: "publicemail"
+  PUBLICREQUEST: "publicemail",
+  NEWPASSWORDREQUEST: "newpasswordemail"
 };
 
 class Email {
@@ -30,9 +31,13 @@ class Email {
       case AVAILABLE_TEMPLATES.REQUEST:
         this.subject = "Welcome to our website";
         break;
-      
-        case AVAILABLE_TEMPLATES.PUBLICREQUEST:
+
+      case AVAILABLE_TEMPLATES.PUBLICREQUEST:
         this.subject = "Welcome to our website";
+        break;
+
+      case AVAILABLE_TEMPLATES.NEWPASSWORDREQUEST:
+        this.subject = "Reset password";
         break;
 
       default:
@@ -71,6 +76,7 @@ class Email {
     if (!email) {
       throw new Error("Email not set");
     }
+  
     if (!this.body || !this.subject) {
       throw new Error("Body or subject not set");
     }
@@ -88,7 +94,7 @@ class Email {
     const info = await transporter.sendMail({
       from: `"Google-Drive" <${process.env.EMAIL_USERNAME}>`,
       to: email,
-      subject: "Welcome to our website",
+      subject: "Google Drive Website",
       html: this.body,
     });
 

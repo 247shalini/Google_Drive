@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const  path  = require('path');
 const session = require('express-session');
 const Handlebars = require('handlebars');
+const flash = require("connect-flash");
 const { default: mongoose } = require("mongoose");
 const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access');
 
@@ -17,6 +18,14 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false }
 }))
+
+// connect flash code
+app.use(session({
+  secret:"flash session is use for error",
+  resave:false,
+  saveUninitialized:true
+}))
+app.use(flash());
 
 // Stripe secret key code
 const stripeSecretKey = process.env.STRIPE_SECRET;

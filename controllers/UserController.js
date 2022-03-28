@@ -2,16 +2,16 @@ require('dotenv').config()
 const UserModel = require("../models/UserModel");
 const file = require('../models/file');
 const File = require("../models/file.js");
-const {alert} = require("node-popup");
 const { Email, AVAILABLE_TEMPLATES } = require("../utils/Email.js");
-const { count } = require('../models/UserModel');
+const { count, validate } = require('../models/UserModel');
+const jwt = require("jsonwebtoken");
+const JWT_SECRET = "json web token secrate key"
 
 const homePage = async (req, res, next) => {
   try {
     const userId = req.session.userId
-    console.log(",userid", userId)
 
-    if(!userId) {
+    if (!userId) {
       return res.redirect('/login')
     }
 
@@ -25,10 +25,12 @@ const homePage = async (req, res, next) => {
     const files = await file
       .find({ permittedUsers: { $elemMatch: { userEmail } } })
       .lean();
+
     return res.render('home/home', {
       total: files.length,
       files: files,
       plan: planSubscription.plan,
+      emailTaken: req.flash('emailTaken'),
     })
 
   } catch (error) {
@@ -42,7 +44,6 @@ const homePage = async (req, res, next) => {
 };
 const homeAction = async (req, res, next) => {
   try {
-    // next() or
     return res.status(200).json({
       success: true,
       message: "Data saved successfully.",
@@ -133,6 +134,108 @@ const registerAction = async (req, res, next) => {
   }
 };
 
+const forgotPasswordPage = async (req, res, next) => {
+  try {
+    return res.render('login/forgotpassword')
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message:
+        "We are having some error while completing your request. Please try again after some time.",
+      error: error
+    });
+  }
+}
+
+const forgotPasswordPageAction = async (req, res, next) => {
+  try {
+    const { emails } = req.body;
+    const user = await UserModel.findOne({ email: emails });
+
+    // set the secret with jwt token + password
+    const secret = JWT_SECRET + user.password
+    const payLoad = {
+      email: user.email,
+      id: user.id
+    }
+    const token = jwt.sign(payLoad, secret, { expiresIn: '5m' })
+    const link = `http://localhost:8000/newpassword/${user.id}/${token}`
+
+    // send email to set the new password 
+    const emailClient = new Email();
+    emailClient.setTemplate(AVAILABLE_TEMPLATES.NEWPASSWORDREQUEST);
+    emailClient.setBody({ link: link, firstname: user.firstname });
+    emailClient.send(user.email);
+
+    return res.render("login/forgotpassword", {
+      link: "Reset password link has been sent to your Email !!"
+    })
+
+  } catch (error) {
+    return res.render("login/forgotpassword", {
+      error: "Email is Invalid !!",
+    });
+  }
+}
+
+const newPasswordPage = async (req, res, next) => {
+  const { id, token } = req.params;
+  const user = await UserModel.findOne({ id })
+
+  // check if this id exist in database 
+  if (id !== user.id) {
+    return res.send("Invalid User Id...")
+  }
+
+  // we have a valid id, and we have a valid user with this id
+  const secret = JWT_SECRET + user.password
+  try {
+    const payLoad = jwt.verify(token, secret)
+    return res.render('login/newpassword')
+
+  } catch (error) {
+    return res.render("login/forgotpassword", {
+      message: "Invalid link, Try again later !!",
+    });
+  }
+}
+
+const newPasswordPageAction = async (req, res, next) => {
+  const { id, token } = req.params;
+  const { password, cpassword } = req.body;
+  const user = await UserModel.findOne({ id })
+
+  // check if this id exist in database 
+  if (id !== user.id) {
+    return res.send("Invalid User Id...")
+  }
+
+  const secret = JWT_SECRET + user.password
+  try {
+    const payLoad = jwt.verify(token, secret)
+
+    // validate password and confirm password should match
+    // we can simply find the user with the payLoad email and id and finally update with new password
+    if (password == cpassword) {
+      await UserModel.findOneAndUpdate({ _id: id }, { $set: { password: password } }, { new: true })
+      return res.render("login/newpassword", {
+        success: "Successfully changed your password !!"
+      })
+    } else {
+      return res.render("login/newpassword", {
+        error: "Password not matched !!"
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message:
+        "We are having some error while completing your request. Please try again after some time.",
+      error: error
+    });
+  }
+}
+
 const uploadFile = async (req, res, next) => {
   try {
     const { file } = req;
@@ -164,32 +267,11 @@ const uploadFile = async (req, res, next) => {
   }
 };
 
-// const viewImage = async (req, res, next) => {
-//   await File.find()
-//     .select("name path")
-//     .exec()
-//     .then(docs => {
-//       return res.redirect("/viewimage")
-//     })
-// }
-
-// const viewImageAction = async (req, res, next) => {
-//   const { fileId } = req.body
-//   const image = File.find({})
-//   image.exec(function (err, data) {
-//     return res.render("home/home", {
-//       data: data,
-//     })
-//   })
-// }
-
 const permittedUsers = async (req, res, next) => {
   try {
     const { fileId, emails } = req.body;
     const userId = req.session.userId;
     const file = await File.findById(fileId);
-    console.log("userId", userId)
-    console.log("fileId", fileId)
 
     if (!file) {
       return res.redirect("/");
@@ -197,7 +279,7 @@ const permittedUsers = async (req, res, next) => {
 
     // private image share count
     const shareLimit = await UserModel.findById({ _id: userId })
-    console.log("shareLimit...",shareLimit)
+    // console.log("shareLimit...",shareLimit)
     await UserModel.findOneAndUpdate({ _id: userId }, { $set: { privateShare: shareLimit.privateShare + 1 } }, { new: true })
 
     // permittedUsers save
@@ -269,9 +351,11 @@ module.exports = {
   loginAction,
   registerPage,
   registerAction,
+  forgotPasswordPage,
+  forgotPasswordPageAction,
+  newPasswordPage,
+  newPasswordPageAction,
   uploadFile,
-  // viewImage,
-  // viewImageAction,
   permittedUsers,
   publicShare,
   logOut

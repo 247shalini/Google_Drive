@@ -42,6 +42,7 @@
 {{!-- homepage start --}}
 <div class="row" style="padding-left:20px; margin:0px;">
   <div class="col-12">
+    <div class="d-flex flex-row mt-3 mx-5 p-2 text-danger">{{emailTaken}}</div>
     <h1 class="ml-4 mt-3 mx-5">Total Upload File : {{total}}</h1>
     <h5 class="mx-5 mt-3">Subscription plan : {{plan}}</h5>
     <button type="button" class="btn btn-warning mb-3 mt-3 mx-5" data-bs-toggle="modal"
@@ -57,11 +58,15 @@
           <div class="col-3 m-3">
             <div class="card shadow" style="width: 18rem;">
               <img src='{{this.path}}' style="width:285px;height: 200px;" />
-              <div class="card-body text-center">
-                <h5 class="card-title font-poppins">{{this.name}}</h5>
+              <div class="card-body">
+                <h5 class="card-title font-poppins text-center">{{this.name}}</h5>
+                <p>{{#each this.permittedUsers}}
+                <p>{{this.userEmail}}</p>
+                </p>
+          {{/each}}
               </div>
-              <button class="btn btn-primary mx-4 mb-3" onclick="fileId('{{ this._id }}')" data-bs-toggle="modal"
-                data-bs-target="#ModalCenters">Share this
+              <button class="btn btn-primary mx-4 mb-3" onclick="fileId('{{ this._id }}')"
+                data-bs-toggle="modal" data-bs-target="#ModalCenters">Share this
                 Image</button>
             </div>
           </div>
@@ -112,8 +117,10 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
+          {{!-- <input type="text" name="shareemail" id="shareemail" /> --}}
+
           <label for="share-email" class="form-label">Enter a Email</label>
-          <input class="form-control" type="email" id="share-email" name="emails" required/>
+          <input class="form-control" type="email" id="share-email" name="emails" required />
         </div>
       </div>
 
@@ -127,14 +134,14 @@
         <form id="publicform" onsubmit="publicformsubmit()" method="post">
           <input type="hidden" name="fileId" class="fileId" id="fileId" />
           <input type="hidden" name="emails" id="public-share-email" />
-          <button type="submit" onclick="msgdisplay()" class="btn btn-primary mb-3">
+          <button type="submit" class="btn btn-primary mb-3">
             Share Image public</button>
         </form>
 
         <form id="privateform" onsubmit="privateformsubmit()" method="post">
           <input type="hidden" name="fileId" class="fileId" id="privatefileId" />
           <input type="hidden" name="emails" id="private-share-email" />
-          <button type="submit" onclick="msgdisplay()" class="btn btn-primary mb-3">
+          <button type="submit" class="btn btn-primary mb-3">
             Share Image private</button>
         </form>
 
@@ -148,7 +155,7 @@
 {{!-- javascript code start --}}
 <script>
 
-  function fileId(fileId) {
+  function fileId(fileId, shareemail) {
     document.getElementById("fileId").value = fileId;
     document.getElementById("privatefileId").value = fileId;
   }
