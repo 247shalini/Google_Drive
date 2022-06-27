@@ -68,7 +68,10 @@
               <button class="btn btn-primary mx-4 mb-3" onclick="fileId('{{ this._id }}')"
                 data-bs-toggle="modal" data-bs-target="#ModalCenters">Share this
                 Image</button>
-            </div>
+            </div><a href="/v1/admin/news/detail/{{this.slug}}">
+                                        <i class="fas fa-fw fa-regular fa-eye" style="color:rgb(57, 92, 248);">
+                                        </i>
+                                    </a>
           </div>
         </div>
       </section>
@@ -169,6 +172,7 @@
     document.getElementById("public-share-email").value = email;
     return document.getElementById("publicform").action = "http://localhost:8000/public"
   }
+  
   function privateformsubmit() {
     const emails = document.getElementById("share-email").value;
     document.getElementById("private-share-email").value = emails;

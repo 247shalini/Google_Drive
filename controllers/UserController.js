@@ -190,7 +190,7 @@ const newPasswordPage = async (req, res, next) => {
   // we have a valid id, and we have a valid user with this id
   const secret = JWT_SECRET + user.password
   try {
-    const payLoad = jwt.verify(token, secret)
+    const payLoad = jwt.verify(token, secret) 
     return res.render('login/newpassword')
 
   } catch (error) {
