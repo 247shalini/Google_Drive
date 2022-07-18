@@ -58,6 +58,7 @@ const subscriptionAction = async (req, res) => {
 
 const paymentAction = (req, res) => {
     try {
+        console.log("in payment action", req.body)
         const amount = req.body.price
         stripe.customers.create({
             email: req.body.stripeEmail,
