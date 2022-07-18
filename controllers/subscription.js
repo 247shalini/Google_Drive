@@ -1,6 +1,7 @@
 const UserModel = require("../models/UserModel");
-var Publishable_Key = 'pk_test_51KdyM6BSVGNjFon4gTyQeEetTq0s9D8wsvj4p4kshqVx16PYv2o1OIyFoJ2sQH8GGMoVKuFb2t5TrEAqXUD1uU6m00OpOIyZ1S'
-var Secret_Key = 'sk_test_51KdyM6BSVGNjFon46W18khZLGUnnJo2P9b3F3dvHeB86Pj6mTbeoflU2TgkQrpSKCYUu2kaEgsSLV2pLmhAggwYJ00zYTKPO84'
+var Publishable_Key = 'pk_test_51KEy69Cp6f0WNrVQG8HXHd4iAlpSIkZYz3M2r59bG54UKfB3iJcGEOy2O7FAD406Xmw1cryLErJRpdAohJqz9HKE00xd8SA7HM'
+var Secret_Key = 'sk_test_51KEy69Cp6f0WNrVQmmvJKVKcU89qNcAJUrXFdSEMT23GxfwMQvFYCdEApUhvk5MflzA7sIULtxTNDMcp7dkXbxH000fVlP6dKH'
+
 const stripe = require('stripe')(Secret_Key);
 
 const subscription = async (req, res) => {
