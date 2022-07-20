@@ -20,4 +20,5 @@ const sendEmail = async (req, res, next) => {
     });
   }
 }
+
 module.exports = sendEmail;  

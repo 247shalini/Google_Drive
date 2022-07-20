@@ -27,10 +27,6 @@ app.use(session({
 }))
 app.use(flash());
 
-// Stripe secret key code
-const stripeSecretKey = process.env.STRIPE_SECRET;
-const stripePublicKey = process.env.STRIPE_PUBLIC_KEY;
-
 // handlebars code
 app.engine(".hbs", engine({
   extname: ".hbs",
